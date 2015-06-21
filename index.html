@@ -2,15 +2,38 @@
 
 <head>
     <title>Chat application with Node and Sockets</title>
+    
+    <!-- data transfered -->
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="MyChemist Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="/js/camera.js"></script>
+<link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
+<!-- Custom Theme files -->
+<link href="/css/style.css" rel='stylesheet' type='text/css' />	
+<script src="/js/jquery.min.js"> </script>
+<!--webfonts-->
+ <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,400,300,600,700|Playball' rel='stylesheet' type='text/css'>
+<!--//webfonts-->
+
+<link href="/css/app.css" rel="stylesheet" type="text/css">
+    <script src="/js/app.js"></script>
+    <script src="/js/routes.js"></script>
+    <script src="/js/angular.js"></script>
+    
+    
+    <!-- end data transfer -->
+    
+    
     <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
     <script>
-     ///var port = (process.env.VCAP_APP_PORT || 3000);
-//var host = (process.env.VCAP_APP_HOST || 'localhost');
         var name,
             socket = io.connect("http://chemistchat.mybluemix.net");
-            //var port = (process.env.VCAP_APP_PORT || 3000);
-//var host = (process.env.VCAP_APP_HOST || 'localhost');
+          
         
         $(function () {
             //alert(socket.id);
@@ -31,12 +54,15 @@
                 });
             });
 
+            $('#take-picture')
+
             //After sending message to the server, we'll have to wire up the event for it.
             //We can do the following. Upon recievin the message print it to the message box
             //that we've created in our html
             socket.on("serverMsg", function (data) {
                 //Append the message from the server to the message box
-                $("#msgBox").append("<strong>" + data.name + "</strong>: " + data.msg + "<br/>");
+                //$("#msgBox").append("<strong>" + data.name + "</strong>: " + data.msg + "<br/>");
+                $("#msgBox").append('<h4><img src="">'+data.name+'</h4><p>'+data.msg +'</p><hr/>');
             });
 
             $("#msg").on("keyup", function (event) {
@@ -51,25 +77,124 @@
                     $("#status").html('');
                 }, 3000);
             });
-
-          //  socket.on("new_msg", function(data) {
-            //    alert(data.msg);
-//}
         });
     </script>
 </head>
 
 <body>
-    <!--Message box: To show the sent/recieved messages-->
-    <div id="msgBox" style="height: 200px; width: 400px; border: 1px solid blue;">
+    
+    <!-- 
+            
+            <div id="msgBox" style="height: 200px; width: 400px; border: 1px solid blue;">
 
+            </div>
+            
+            <input type="text" id="msg" style="width:300px" />
+            
+            <input type="submit" id="send" value="send" />
+            <br/>
+            <div id="status"></div>
+    
+    -->
+<div>
+    
+    <div id="chat" class="header">
+		<div class="header-bottom">
+			<div class="container">
+				<div class="logo">
+					<a href="index.html"><h1>My<span>Chemist</span></h1></a>
+				</div>
+				<span class="menu"></span>
+				<div class="top-menu">
+                    <!--
+				<ul class="cl-effect-16">
+						<li><a class="active" href="index.html" data-hover="HOME">Home</a></li> 
+						<li><a href="about.html" data-hover="About">About</a></li>
+						<li><a href="chats.html." data-hover="SERVICES">Chats</a></li>
+						<li><a href="payment.html" data-hover="Payments">Payments</a></li>
+						<li><a href="pasthistory.html" data-hover="BLOG">Previous Orders</a></li>
+						<li><a href="contact.html" data-hover="CONTACT">Contact</a></li>
+						<div class="clearfix"> </div>
+					</ul>
+                        -->
+				</div>
+				<!-- script for menu 
+				<script>
+				$( "span.menu" ).click(function() {
+				  $( ".top-menu" ).slideToggle( "fast", function() {
+				    // Animation complete.
+				  });
+				});
+			</script>
+                    -->
+			<!-- script for menu -->
+				<div class="clearfix"></div>
+			</div>
+		</div>
     </div>
-    <!--Textbox: to enter the message text-->
-    <input type="text" id="msg" style="width:300px" />
-    <!--Send: A button to send the message to others-->
-    <input type="submit" id="send" value="send" />
-    <br/>
-    <div id="status"></div>
+    
+    <!--chat part-->
+    
+    <div class="grid-frame">
+
+
+          <div class="grid-block collapse medium-9 large-9 vertical">
+
+            <div class="grid-block">
+              <div class="grid-block small-12 medium-9 vertical">
+                  <!-- this is the place where msg will appear -->
+                <div class="grid-content" id="msgBox">
+
+                </div>
+                <div class="message-input grid-content collapse shrink">
+                  
+                  <span class="inline-label" >
+                    <input type="text" placeholder="Message"  id="msg">
+                    <a href="#" class="button" id="send">Send</a>
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+    
+    <!--chat part ends -->
+	<!--banner-bottom-->
+    <div>
+		<div class="copy">
+		    <p>&copy; 2015 All Rights Reserved. <br>Design by <a href="">Team-Feather, AngelHack</a> </p>
+		</div>
+		<!--footer-->
+	</div>
+</div>
+			<!--start-smoth-scrolling-->
+			<script type="text/javascript">
+								jQuery(document).ready(function($) {
+									$(".scroll").click(function(event){		
+										event.preventDefault();
+										$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+									});
+								});
+								</script>
+							<!--start-smoth-scrolling-->
+						<script type="text/javascript">
+									$(document).ready(function() {
+										/*
+										var defaults = {
+								  			containerID: 'toTop', // fading element id
+											containerHoverID: 'toTopHover', // fading element hover id
+											scrollSpeed: 1200,
+											easingType: 'linear' 
+								 		};
+										*/
+										
+										$().UItoTop({ easingType: 'easeOutQuart' });
+										
+									});
+								</script>
+		<a href="#home" id="toTop" class="scroll" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
 </body>
 
 </html>

@@ -1,13 +1,81 @@
-
 var port = (process.env.VCAP_APP_PORT || 3000);
 var host = (process.env.VCAP_APP_HOST || 'localhost');
-var app = require("http").createServer(handler),
-    io = require("socket.io").listen(app),
-    fs = require("fs");
-//var users={};
-app.listen(port);
 
-function handler(req, res) {
+var http = require('http');
+var express = require('express'),
+    app = module.exports.app = express();
+
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);  //pass a http.Server instance
+server.listen(port);  //listen on port 80
+var fs = require("fs");
+
+app.get('/',function(req,res){
+
+   fs.readFile(__dirname + '/index.html',
+        function (err, data) {
+            if (err) {
+                res.writeHead(500);
+                return res.end('Error loading index.html');
+            }
+            res.writeHead(200,{'content-type':'text/html'});
+            res.end(data);
+        });
+});
+
+app.use(express.static(__dirname + '/public'));
+/* app.get('/camera.js',function(req, res){
+    fs.readFile(__dirname + 'js/camera.js',
+        function (err, data) {
+            if (err) {
+                res.writeHead(500);
+                return res.end('Error loading camera.js');
+            }
+            res.writeHead(200,{'content-type':'text/javascript'});
+            res.end(data);
+        });
+
+});
+app.get('/bootstrap.css',function(req, res){
+    fs.readFile(__dirname + 'css/bootstrap.css',
+        function (err, data) {
+            if (err) {
+                res.writeHead(500);
+                return res.end('Error loading bootstrap.css');
+            }
+            res.writeHead(200,{'content-type':'text/css'});
+            res.end(data);
+        });
+
+});
+app.get('/style.css',function(req, res){
+    fs.readFile(__dirname + 'css/style.css',
+        function (err, data) {
+            if (err) {
+                res.writeHead(500);
+                return res.end('Error loading style.css');
+            }
+            res.writeHead(200,{'content-type':'text/css'});
+            res.end(data);
+        });
+
+});
+app.get('/jquery.min.js',function(req, res){
+    fs.readFile(__dirname + 'js/jquery.min.js',
+        function (err, data) {
+            if (err) {
+                res.writeHead(500);
+                return res.end('Error loading Jquery.js');
+            }
+            res.writeHead(200,{'content-type':'text/javascript'});
+            res.end(data);
+        });
+
+}); */
+//server.listen(port);
+
+/*function handler(req, res) {
+
     fs.readFile(__dirname + '/index.html',
         function (err, data) {
             if (err) {
@@ -18,7 +86,7 @@ function handler(req, res) {
             res.end(data);
         });
 }
-
+*/
 
 
 
@@ -40,5 +108,3 @@ io.sockets.on('connection', function (socket) {
         socket.broadcast.emit("sender", data);
     });
 });
-
-//io.sockets.in('abcd@gmail.com').emit('new_msg', {msg: 'hello'});

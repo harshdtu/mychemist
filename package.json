@@ -1,7 +1,6 @@
 {
   "name": "privatechat",
   "version": "1.0.0",
-  "description": "",
   "main": "chatapp.js",
   "dependencies": {
     "socket.io": "^1.3.5"
