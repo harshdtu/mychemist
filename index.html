@@ -1,0 +1,75 @@
+<html>
+
+<head>
+    <title>Chat application with Node and Sockets</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+     ///var port = (process.env.VCAP_APP_PORT || 3000);
+//var host = (process.env.VCAP_APP_HOST || 'localhost');
+        var name,
+            socket = io.connect("http://chemistchat.mybluemix.net");
+            //var port = (process.env.VCAP_APP_PORT || 3000);
+//var host = (process.env.VCAP_APP_HOST || 'localhost');
+        
+        $(function () {
+            //alert(socket.id);
+            //as the user to enter their nick name or name.
+            name = window.prompt("enter your name");
+            //If the name is not given, ask the user to enter once again
+            if (name == '' || name == null) {
+                $("body").html(" please refresh the page and try again ");
+            }
+
+            //socket.emit('join',{email:abcd@gmail.com});
+            //When send button is clicked on, send the message to server
+            $("#send").click(function () {
+                //send to the server with person name and message
+                socket.emit("clientMsg", {
+                    "name": name,
+                    "msg": $("#msg").val()
+                });
+            });
+
+            //After sending message to the server, we'll have to wire up the event for it.
+            //We can do the following. Upon recievin the message print it to the message box
+            //that we've created in our html
+            socket.on("serverMsg", function (data) {
+                //Append the message from the server to the message box
+                $("#msgBox").append("<strong>" + data.name + "</strong>: " + data.msg + "<br/>");
+            });
+
+            $("#msg").on("keyup", function (event) {
+                socket.emit("sender", {
+                    name: name
+                });
+            });
+
+            socket.on("sender", function (data) {
+                $("#status").html(data.name + " is typing");
+                setTimeout(function () {
+                    $("#status").html('');
+                }, 3000);
+            });
+
+          //  socket.on("new_msg", function(data) {
+            //    alert(data.msg);
+//}
+        });
+    </script>
+</head>
+
+<body>
+    <!--Message box: To show the sent/recieved messages-->
+    <div id="msgBox" style="height: 200px; width: 400px; border: 1px solid blue;">
+
+    </div>
+    <!--Textbox: to enter the message text-->
+    <input type="text" id="msg" style="width:300px" />
+    <!--Send: A button to send the message to others-->
+    <input type="submit" id="send" value="send" />
+    <br/>
+    <div id="status"></div>
+</body>
+
+</html>
